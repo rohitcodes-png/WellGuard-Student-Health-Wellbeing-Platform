@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="counselor.dashboard_title">Counselor Dashboard</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .alert-item {
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-bottom: var(--space-4);
+            border-left: 4px solid;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+        }
+
+        .alert-item.low {
+            border-left-color: var(--color-info);
+        }
+
+        .alert-item.moderate {
+            border-left-color: var(--color-warning);
+        }
+
+        .alert-item.high {
+            border-left-color: var(--color-danger);
+        }
+
+        .alert-item:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(4px);
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-3);
+        }
+
+        .student-name {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .alert-type {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-1);
+        }
+
+        .alert-message {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-3);
+            line-height: var(--line-height-relaxed);
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: var(--space-2);
+        }
+
+        .student-card {
+            background: var(--color-bg-elevated);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            transition: all var(--transition-fast);
+        }
+
+        .student-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .risk-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: var(--space-2);
+        }
+
+        .risk-low {
+            background-color: var(--color-success);
+        }
+
+        .risk-moderate {
+            background-color: var(--color-warning);
+        }
+
+        .risk-high {
+            background-color: var(--color-danger);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                <span data-i18n="app.title">Wellbeing Platform</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+                <select id="languageSelect" class="form-select"
+                    style="width: auto; padding: var(--space-2) var(--space-3);">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+                <button class="btn btn-outline btn-sm" onclick="authService.logout()">
+                    <span data-i18n="nav.logout">Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="card card-gradient" style="margin-bottom: var(--space-6);">
+            <h2 style="margin: 0;"><span data-i18n="dashboard.welcome">Welcome</span>, <span
+                    id="counselorName">Counselor</span>! 🧑‍⚕️</h2>
+            <p style="margin-top: var(--space-2); margin-bottom: 0; opacity: 0.9;">
+                Early intervention dashboard for student support and wellbeing
+            </p>
+        </div>
+
+        <!-- Alert Statistics -->
+        <div class="grid grid-cols-4" style="margin-bottom: var(--space-6);">
+            <div class="stat-card">
+                <div class="stat-label">Total Alerts</div>
+                <div class="stat-value" id="totalAlerts">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">New Alerts</div>
+                <div class="stat-value" style="color: var(--color-danger);" id="newAlerts">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value" style="color: var(--color-warning);" id="inProgressAlerts">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Resolved</div>
+                <div class="stat-value" style="color: var(--color-success);" id="resolvedAlerts">--</div>
+            </div>
+        </div>
+
+        <!-- Early Warning Alerts -->
+        <div style="margin-bottom: var(--space-6);">
+            <h3 style="margin-bottom: var(--space-4);">
+                <span data-i18n="counselor.early_warnings">Early Warning Alerts</span> ⚠️
+            </h3>
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+                Preventive, non-alarming alerts for timely intervention
+            </p>
+            <div id="alertsList">
+                <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Assigned Students -->
+        <div class="card" style="margin-bottom: var(--space-6);">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="counselor.students_list">Students Overview</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3" id="studentsList">
+                    <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="counselor.resources">Resource Library</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3">
+                    <div
+                        style="padding: var(--space-4); text-align: center; background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+                        <div style="font-size: 2rem; margin-bottom: var(--space-2);">📚</div>
+                        <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1);">Mental
+                            Health Guides</div>
+                        <button class="btn btn-sm btn-outline" style="margin-top: var(--space-2);">View
+                            Resources</button>
+                    </div>
+
+                    <div
+                        style="padding: var(--space-4); text-align: center; background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+                        <div style="font-size: 2rem; margin-bottom: var(--space-2);">🎯</div>
+                        <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1);">
+                            Intervention Tools</div>
+                        <button class="btn btn-sm btn-outline" style="margin-top: var(--space-2);">Access Tools</button>
+                    </div>
+
+                    <div
+                        style="padding: var(--space-4); text-align: center; background: var(--color-bg-secondary); border-radius: var(--radius-md);">
+                        <div style="font-size: 2rem; margin-bottom: var(--space-2);">📞</div>
+                        <div style="font-weight: var(--font-weight-semibold); margin-bottom: var(--space-1);">Helplines
+                            Directory</div>
+                        <button class="btn btn-sm btn-outline" style="margin-top: var(--space-2);">View
+                            Contacts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ethics Notice -->
+        <div class="alert alert-info" style="margin-top: var(--space-6);">
+            <div class="alert-icon">🔒</div>
+            <div class="alert-content">
+                <div class="alert-title">Ethical Guidelines</div>
+                <p>All alerts are preventive and confidential. This system supports early intervention, not diagnosis.
+                    Always consult with professionals for serious concerns.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script>
+        (async function () {
+            await i18n.init();
+
+            document.getElementById('languageSelect').addEventListener('change', async (e) => {
+                await i18n.changeLanguage(e.target.value);
+            });
+
+            if (!authService.requireAuth(['counselor'])) return;
+
+            const user = authService.getCurrentUser();
+            document.getElementById('counselorName').textContent = user.name.split(' ')[1];
+
+            renderDashboard(user.id);
+        })();
+
+        function renderDashboard(counselorId) {
+            const alerts = dataService.getCounselorAlerts(counselorId);
+
+            // Calculate statistics
+            const totalAlerts = alerts.length;
+            const newAlerts = alerts.filter(a => a.status === 'new').length;
+            const inProgress = alerts.filter(a => a.status === 'acknowledged').length;
+            const resolved = alerts.filter(a => a.status === 'resolved').length;
+
+            document.getElementById('totalAlerts').textContent = totalAlerts;
+            document.getElementById('newAlerts').textContent = newAlerts;
+            document.getElementById('inProgressAlerts').textContent = inProgress;
+            document.getElementById('resolvedAlerts').textContent = resolved;
+
+            renderAlerts(alerts);
+            renderStudentsList();
+        }
+
+        function renderAlerts(alerts) {
+            const alertsList = document.getElementById('alertsList');
+
+            if (!alerts || alerts.length === 0) {
+                alertsList.innerHTML = '<p class="text-center text-secondary">No alerts at this time. Great work!</p>';
+                return;
+            }
+
+            alertsList.innerHTML = alerts.map(alert => `
+        <div class="alert-item ${alert.severity}">
+          <div class="alert-header">
+            <div>
+              <div class="student-name">${alert.studentName}</div>
+              <div class="alert-type">📊 ${alert.type.replace('_', ' ').toUpperCase()}</div>
+            </div>
+            <div>
+              <span class="badge ${utils.getSeverityClass(alert.severity)}">${alert.severity}</span>
+              <span class="badge ${alert.status === 'new' ? 'badge-danger' : alert.status === 'acknowledged' ? 'badge-warning' : 'badge-success'}" style="margin-left: var(--space-2);">
+                ${alert.status}
+              </span>
+            </div>
+          </div>
+          <div class="alert-message">${alert.alert}</div>
+          <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-bottom: var(--space-3);">
+            ${utils.formatDateRelative(alert.date)}
+          </div>
+          <div class="alert-actions">
+            ${alert.status === 'new' ? '<button class="btn btn-sm btn-primary" onclick="acknowledgeAlert(\'' + alert.id + '\')">Acknowledge</button>' : ''}
+            <button class="btn btn-sm btn-outline">View Student Profile</button>
+            <button class="btn btn-sm btn-outline">Add Note</button>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        function renderStudentsList() {
+            const studentsList = document.getElementById('studentsList');
+
+            // Mock student data
+            const students = [
+                { name: 'Aarav Sharma', risk: 'low', wellness: 78 },
+                { name: 'Priya Singh', risk: 'moderate', wellness: 62 },
+                { name: 'Rahul Verma', risk: 'low', wellness: 71 }
+            ];
+
+            studentsList.innerHTML = students.map(student => `
+        <div class="student-card">
+          <div style="display: flex; align-items: center; margin-bottom: var(--space-2);">
+            <span class="risk-indicator risk-${student.risk}"></span>
+            <span style="font-weight: var(--font-weight-semibold);">${student.name}</span>
+          </div>
+          <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-2);">
+            Wellness Score: ${student.wellness}
+          </div>
+          <button class="btn btn-sm btn-outline" style="width: 100%;">View Details</button>
+        </div>
+      `).join('');
+        }
+
+        function acknowledgeAlert(alertId) {
+            utils.showToast('Alert acknowledged and tracking started', 'success');
+
+            // Update alert status in mock data
+            const alerts = mockData.counselorAlerts['c001'];
+            const alert = alerts.find(a => a.id === alertId);
+            if (alert) {
+                alert.status = 'acknowledged';
+                renderDashboard('c001');
+            }
+        }
+    </script>
+</body>
+
+</html>

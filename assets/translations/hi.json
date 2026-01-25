@@ -1,0 +1,166 @@
+{
+    "app": {
+        "title": "छात्र स्वास्थ्य और कल्याण मंच",
+        "subtitle": "एआई-आधारित प्रारंभिक चेतावनी प्रणाली",
+        "tagline": "भारत भर में स्वस्थ, खुश छात्रों का निर्माण"
+    },
+    "nav": {
+        "home": "होम",
+        "dashboard": "डैशबोर्ड",
+        "profile": "प्रोफाइल",
+        "settings": "सेटिंग्स",
+        "logout": "लॉगआउट",
+        "login": "लॉगिन"
+    },
+    "auth": {
+        "welcome": "वापसी पर स्वागत है",
+        "login_title": "अपने खाते में साइन इन करें",
+        "register_title": "नया खाता बनाएं",
+        "username": "उपयोगकर्ता नाम",
+        "password": "पासवर्ड",
+        "confirm_password": "पासवर्ड की पुष्टि करें",
+        "email": "ईमेल पता",
+        "role": "अपनी भूमिका चुनें",
+        "remember_me": "मुझे याद रखें",
+        "forgot_password": "पासवर्ड भूल गए?",
+        "login_button": "साइन इन करें",
+        "register_button": "पंजीकरण करें",
+        "no_account": "खाता नहीं है?",
+        "have_account": "पहले से खाता है?",
+        "sign_up": "साइन अप करें",
+        "sign_in": "साइन इन करें"
+    },
+    "roles": {
+        "student": "छात्र",
+        "parent": "अभिभावक",
+        "counselor": "परामर्शदाता",
+        "admin": "संस्थान व्यवस्थापक"
+    },
+    "dashboard": {
+        "welcome": "स्वागत है",
+        "overview": "अवलोकन",
+        "quick_actions": "त्वरित क्रियाएं",
+        "recent_activity": "हाल की गतिविधि",
+        "alerts": "अलर्ट",
+        "notifications": "सूचनाएं"
+    },
+    "student": {
+        "dashboard_title": "छात्र डैशबोर्ड",
+        "wellness_score": "कल्याण स्कोर",
+        "points_balance": "रॉयल्टी अंक",
+        "tasks_completed": "कार्य पूर्ण",
+        "activity_streak": "गतिविधि श्रृंखला",
+        "todo_title": "मेरी कार्य सूची",
+        "add_task": "नया कार्य जोड़ें",
+        "exercise_tracker": "व्यायाम ट्रैकर",
+        "log_activity": "गतिविधि लॉग करें",
+        "timetable": "मेरा समय सारणी",
+        "exam_schedule": "परीक्षा कार्यक्रम",
+        "rewards": "पुरस्कार और रिडेम्पशन",
+        "redeem_points": "अंक रिडीम करें",
+        "sos_button": "आपातकालीन SOS",
+        "health_metrics": "स्वास्थ्य मेट्रिक्स"
+    },
+    "parent": {
+        "dashboard_title": "अभिभावक डैशबोर्ड",
+        "student_progress": "छात्र प्रगति",
+        "positive_alerts": "सकारात्मक सूचनाएं",
+        "wellness_trends": "कल्याण रुझान",
+        "communication": "संचार",
+        "consent_settings": "गोपनीयता और सहमति"
+    },
+    "counselor": {
+        "dashboard_title": "परामर्शदाता डैशबोर्ड",
+        "early_warnings": "प्रारंभिक चेतावनी अलर्ट",
+        "students_list": "छात्रों का अवलोकन",
+        "intervention_tools": "हस्तक्षेप उपकरण",
+        "resources": "संसाधन पुस्तकालय",
+        "case_notes": "मामला नोट्स"
+    },
+    "admin": {
+        "dashboard_title": "व्यवस्थापक डैशबोर्ड",
+        "analytics": "नीति विश्लेषण",
+        "trends": "रुझान दृश्य",
+        "reports": "रिपोर्ट",
+        "effectiveness": "कार्यक्रम प्रभावशीलता",
+        "anonymous_data": "गुमनाम अंतर्दृष्टि"
+    },
+    "tasks": {
+        "study": "अध्ययन",
+        "exercise": "व्यायाम",
+        "sleep": "नींद",
+        "digital_detox": "डिजिटल डिटॉक्स",
+        "mental_wellness": "मानसिक कल्याण",
+        "pending": "लंबित",
+        "completed": "पूर्ण",
+        "overdue": "समय सीमा समाप्त",
+        "difficulty": {
+            "easy": "आसान",
+            "medium": "मध्यम",
+            "hard": "कठिन"
+        }
+    },
+    "activities": {
+        "running": "दौड़ना",
+        "walking": "चलना",
+        "cycling": "साइकिल चलाना",
+        "yoga": "योग",
+        "sports": "खेल",
+        "gym": "जिम वर्कआउट",
+        "duration": "अवधि (मिनट)",
+        "steps": "कदम गिनती",
+        "log": "गतिविधि लॉग करें"
+    },
+    "alerts": {
+        "positive": "बढ़िया प्रगति!",
+        "warning": "ध्यान आवश्यक",
+        "info": "जानकारी",
+        "success": "सफलता!"
+    },
+    "rewards": {
+        "available": "उपलब्ध पुरस्कार",
+        "stationery": "लेखन सामग्री",
+        "wellness": "कल्याण लाभ",
+        "campus": "कैंपस लाभ",
+        "points_required": "आवश्यक अंक",
+        "redeem": "अभी रिडीम करें"
+    },
+    "common": {
+        "save": "सहेजें",
+        "cancel": "रद्द करें",
+        "delete": "हटाएं",
+        "edit": "संपादित करें",
+        "close": "बंद करें",
+        "confirm": "पुष्टि करें",
+        "back": "पीछे",
+        "next": "अगला",
+        "submit": "जमा करें",
+        "search": "खोजें",
+        "filter": "फ़िल्टर",
+        "loading": "लोड हो रहा है...",
+        "no_data": "कोई डेटा उपलब्ध नहीं",
+        "error": "एक त्रुटि हुई",
+        "success_message": "ऑपरेशन सफल"
+    },
+    "privacy": {
+        "disclaimer": "यह निदान प्रणाली नहीं है। गंभीर चिंताओं के लिए, कृपया मानसिक स्वास्थ्य पेशेवरों से संपर्क करें।",
+        "consent_required": "यह डेटा देखने के लिए छात्र की सहमति आवश्यक",
+        "data_protected": "सभी डेटा एन्क्रिप्टेड और सुरक्षित है",
+        "support_not_surveillance": "निगरानी नहीं, समर्थन के लिए डिज़ाइन किया गया"
+    },
+    "emergency": {
+        "sos_title": "आपातकालीन सहायता",
+        "national_helpline": "राष्ट्रीय मानसिक स्वास्थ्य हेल्पलाइन",
+        "emergency_contacts": "आपातकालीन संपर्क",
+        "alert_sent": "परामर्शदाता और आपातकालीन संपर्कों को अलर्ट भेजा गया"
+    },
+    "settings": {
+        "language": "भाषा",
+        "theme": "थीम",
+        "light_mode": "लाइट मोड",
+        "dark_mode": "डार्क मोड",
+        "notifications": "सूचना प्राथमिकताएं",
+        "privacy": "गोपनीयता सेटिंग्स",
+        "account": "खाता सेटिंग्स"
+    }
+}

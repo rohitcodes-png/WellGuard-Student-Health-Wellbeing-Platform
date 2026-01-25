@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - AI Explainability</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .explainer-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .section {
+            margin-bottom: var(--space-8);
+        }
+
+        .feature-card {
+            background: var(--color-bg-elevated);
+            padding: var(--space-6);
+            border-radius: var(--radius-xl);
+            border-left: 4px solid var(--color-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        .faq-item {
+            background: var(--color-bg-secondary);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-3);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .faq-item:hover {
+            background: var(--color-bg-tertiary);
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: var(--space-3);
+            padding-top: var(--space-3);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">🔍</span>
+                <span>How It Works</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-sm btn-outline" onclick="window.history.back()">← Back</button>
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="explainer-container">
+        <!-- Header -->
+        <div class="card card-gradient" style="margin-bottom: var(--space-8); text-align: center;">
+            <h1 style="margin: 0;">🔍 How Our AI Works</h1>
+            <p style="margin-top: var(--space-3); margin-bottom: 0; opacity: 0.9;">
+                Transparent, explainable, and ethical wellbeing analysis
+            </p>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="alert alert-warning" style="margin-bottom: var(--space-6);">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <div class="alert-title">Not a Diagnostic Tool</div>
+                <p>This system provides wellbeing insights and early warnings, not medical diagnosis. For serious health
+                    concerns, always consult qualified healthcare professionals.</p>
+            </div>
+        </div>
+
+        <!-- How Risk Scores Are Calculated -->
+        <div class="section">
+            <h2 style="margin-bottom: var(--space-4);">📊 How Risk Scores Are Calculated</h2>
+
+            <div class="feature-card">
+                <h3 style="margin-top: 0;">1. Mental Health Score (35% weight)</h3>
+                <p><strong>Inputs:</strong></p>
+                <ul>
+                    <li>Stress level (1-5 scale)</li>
+                    <li>Academic pressure (1-5 scale)</li>
+                    <li>Daily mood selection</li>
+                    <li>Historical stress patterns</li>
+                </ul>
+                <p><strong>How it works:</strong></p>
+                <p>Starts at 100 (perfect). Points deducted for:</p>
+                <ul>
+                    <li>High stress (level 4-5): -15 to -60 points</li>
+                    <li>High academic pressure: -10 to -40 points</li>
+                    <li>Negative moods (sad/stressed): -30 to -40 points</li>
+                    <li>Sustained high stress (7+ days): additional -10 points</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 style="margin-top: 0;">2. Lifestyle Score (25% weight)</h3>
+                <p><strong>Inputs:</strong></p>
+                <ul>
+                    <li>Sleep hours per night</li>
+                    <li>Sleep consistency over time</li>
+                </ul>
+                <p><strong>Optimal range:</strong> 7-9 hours</p>
+                <p><strong>Penalties:</strong></p>
+                <ul>
+                    <li>Less than 6 hours: -30 points</li>
+                    <li>6-7 hours: -15 points</li>
+                    <li>More than 9 hours: -10 points</li>
+                    <li>Inconsistent sleep pattern: additional -10 points</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 style="margin-top: 0;">3. Digital Wellbeing Score (20% weight)</h3>
+                <p><strong>Inputs:</strong></p>
+                <ul>
+                    <li>Daily screen time hours</li>
+                    <li>Screen time trends</li>
+                </ul>
+                <p><strong>Recommended limit:</strong> 4 hours or less</p>
+                <p><strong>Penalties:</strong></p>
+                <ul>
+                    <li>More than 8 hours: -40 points</li>
+                    <li>6-8 hours: -25 points</li>
+                    <li>4-6 hours: -10 points</li>
+                    <li>Increasing trend: additional -10 points</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h3 style="margin-top: 0;">4. Physical Health Score (20% weight)</h3>
+                <p><strong>Inputs:</strong></p>
+                <ul>
+                    <li>Physical activity days per week</li>
+                    <li>Exercise consistency</li>
+                </ul>
+                <p><strong>WHO recommendation:</strong> 5+ days per week</p>
+                <p><strong>Penalties:</strong></p>
+                <ul>
+                    <li>Zero activity: -40 points</li>
+                    <li>1-2 days: -25 points</li>
+                    <li>3-4 days: -10 points</li>
+                    <li>Chronic inactivity: additional -15 points</li>
+                </ul>
+            </div>
+
+            <div class="feature-card" style="background: var(--gradient-primary); color: white; border: none;">
+                <h3 style="margin-top: 0;">Overall Wellbeing Index</h3>
+                <p><strong>Formula:</strong></p>
+                <p>Wellbeing = (Mental × 35%) + (Lifestyle × 25%) + (Digital × 20%) + (Physical × 20%)</p>
+                <p><strong>Color Coding:</strong></p>
+                <ul>
+                    <li>🟢 Green (70-100): Healthy - Keep it up!</li>
+                    <li>🟡 Yellow (40-69): Caution - Attention needed</li>
+                    <li>🔴 Red (0-39): Risk - Support recommended</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Persona Detection -->
+        <div class="section">
+            <h2 style="margin-bottom: var(--space-4);">👤 How Personas Are Detected</h2>
+
+            <div class="grid grid-cols-2">
+                <div class="card">
+                    <h4>📱 Screen-Overloaded</h4>
+                    <p style="font-size: var(--font-size-sm);">
+                        <strong>Trigger:</strong> Screen time > 6 hours<br>
+                        <strong>Tips:</strong> Digital detox strategies
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>😰 Burnt-Out</h4>
+                    <p style="font-size: var(--font-size-sm);">
+                        <strong>Trigger:</strong> High stress + insufficient sleep<br>
+                        <strong>Tips:</strong> Stress management & rest
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>😴 Sleep-Deprived</h4>
+                    <p style="font-size: var(--font-size-sm);">
+                        <strong>Trigger:</strong> Sleep < 6.5 hours<br>
+                            <strong>Tips:</strong> Sleep hygiene techniques
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>🪑 Sedentary</h4>
+                    <p style="font-size: var(--font-size-sm);">
+                        <strong>Trigger:</strong> Activity < 3 days/week<br>
+                            <strong>Tips:</strong> Exercise motivation
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert System -->
+        <div class="section">
+            <h2 style="margin-bottom: var(--space-4);">🚨 How Alerts Work (Ethical & Tiered)</h2>
+
+            <div class="feature-card" style="border-left-color: var(--color-success);">
+                <h4>Tier 0: Self-Help (Green → Yellow)</h4>
+                <p>Wellbeing score 40-69. System suggests self-help resources, breathing exercises, wellness tips.</p>
+                <p><strong>No external notifications.</strong></p>
+            </div>
+
+            <div class="feature-card" style="border-left-color: var(--color-warning);">
+                <h4>Tier 1: Counselor (Yellow → Red or 3+ days low)</h4>
+                <p>Wellbeing score < 40 for 3+ days OR mental health score < 40.</p>
+                        <p><strong>Counselor receives notification.</strong> Student is aware and supported.</p>
+            </div>
+
+            <div class="feature-card" style="border-left-color: var(--color-danger);">
+                <h4>Tier 2: Parent (Sustained Red + Consent)</h4>
+                <p>Critical wellbeing level (< 30) AND parent consent given.</p>
+                        <p><strong>Parent receives supportive message</strong> (never raw data or alarmist language).
+                        </p>
+            </div>
+
+            <div class="feature-card" style="border-left-color: #dc2626;">
+                <h4>Tier 3: Emergency (SOS or Crisis)</h4>
+                <p>SOS button pressed OR severe crisis indicators.</p>
+                <p><strong>Immediate counselor + parent alert.</strong> Emergency protocols activated.</p>
+            </div>
+        </div>
+
+        <!-- Privacy & Data -->
+        <div class="section">
+            <h2 style="margin-bottom: var(--space-4);">🔒 Privacy & Data Protection</h2>
+
+            <div class="card">
+                <h4>What Data We Collect</h4>
+                <ul>
+                    <li>Daily wellness check-in responses</li>
+                    <li>Exercise and activity logs</li>
+                    <li>Task completion records</li>
+                    <li>Points and rewards transactions</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>How Data Is Used</h4>
+                <ul>
+                    <li><strong>Student:</strong> See your own wellbeing trends and insights</li>
+                    <li><strong>Parent:</strong> Receive supportive notifications (with your consent only)</li>
+                    <li><strong>Counselor:</strong> Early warning alerts for students who need support</li>
+                    <li><strong>Admin:</strong> Anonymous, aggregated trends for policy-making only</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Your Rights</h4>
+                <ul>
+                    <li>✅ Control who sees your data</li>
+                    <li>✅ Revoke consent anytime</li>
+                    <li>✅ Request data deletion</li>
+                    <li>✅ See why alerts were triggered</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="section">
+            <h2 style="margin-bottom: var(--space-4);">❓ Frequently Asked Questions</h2>
+
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <h4 style="margin: 0;">Is this system diagnosing mental health conditions?</h4>
+                <div class="faq-answer">
+                    <p><strong>No.</strong> This is a wellbeing tracking and early warning system, not a diagnostic
+                        tool. It helps identify students who might benefit from support, but only qualified healthcare
+                        professionals can provide diagnoses.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <h4 style="margin: 0;">Can I fake my check-ins to get better scores?</h4>
+                <div class="faq-answer">
+                    <p>While you can input any data, the system is designed to help you, not judge you. Honest check-ins
+                        provide better personalized support. The credits system also validates consistency to prevent
+                        gaming.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <h4 style="margin: 0;">Will my parents see all my data?</h4>
+                <div class="faq-answer">
+                    <p><strong>Only if you consent.</strong> Parents receive positive, supportive notifications (like
+                        "Your child is maintaining healthy habits!"), never raw check-in data. Critical alerts require
+                        your explicit consent.</p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <h4 style="margin: 0;">What happens if I press the SOS button?</h4>
+                <div class="faq-answer">
+                    <p>Immediate alert to your counselor and emergency contacts. You'll see helpline numbers instantly.
+                        This is for genuine emergencies - mental health crises, urgent support needs, or feeling unsafe.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <h4 style="margin: 0;">How accurate is the AI?</h4>
+                <div class="faq-answer">
+                    <p>The system uses evidence-based thresholds (WHO sleep guidelines, research on screen time, etc.).
+                        It's designed for early detection, not precision diagnosis. Think of it as a smoke detector, not
+                        a fire investigation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust -->
+        <div class="alert alert-success">
+            <div class="alert-icon">✅</div>
+            <div class="alert-content">
+                <div class="alert-title">Our Commitment</div>
+                <p>This platform is built on trust, transparency, and student wellbeing. Every feature is designed to
+                    support you, never surveil or punish. Questions? Your counselor or admin can explain further.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+</body>
+
+</html>

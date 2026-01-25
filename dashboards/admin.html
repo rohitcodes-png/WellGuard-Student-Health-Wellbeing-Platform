@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="admin.dashboard_title">Admin Dashboard</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .chart-container {
+            background: var(--color-bg-elevated);
+            padding: var(--space-6);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-6);
+        }
+
+        .risk-pattern-item {
+            background: var(--color-bg-secondary);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-3);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+        }
+
+        .trend-increasing {
+            background: hsla(4, 90%, 58%, 0.15);
+            color: var(--color-danger);
+        }
+
+        .trend-decreasing {
+            background: hsla(142, 71%, 45%, 0.15);
+            color: var(--color-success);
+        }
+
+        .trend-stable {
+            background: hsla(199, 89%, 48%, 0.15);
+            color: var(--color-info);
+        }
+
+        .distribution-bar {
+            display: flex;
+            height: 40px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin: var(--space-3) 0;
+        }
+
+        .distribution-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                <span data-i18n="app.title">Wellbeing Platform</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+                <select id="languageSelect" class="form-select"
+                    style="width: auto; padding: var(--space-2) var(--space-3);">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+                <button class="btn btn-outline btn-sm" onclick="authService.logout()">
+                    <span data-i18n="nav.logout">Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="card card-gradient" style="margin-bottom: var(--space-6);">
+            <h2 style="margin: 0;"><span data-i18n="dashboard.welcome">Welcome</span>, <span
+                    id="adminName">Admin</span>! 📊</h2>
+            <p style="margin-top: var(--space-2); margin-bottom: 0; opacity: 0.9;">
+                Policy analytics and institutional wellbeing insights
+            </p>
+        </div>
+
+        <!-- Overall Statistics -->
+        <div class="grid grid-cols-5" style="margin-bottom: var(--space-6);">
+            <div class="stat-card">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-value" id="totalStudents">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Active Users</div>
+                <div class="stat-value" style="color: var(--color-success);" id="activeUsers">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Avg Wellness Score</div>
+                <div class="stat-value" style="color: var(--color-primary);" id="avgWellness">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">At-Risk Students</div>
+                <div class="stat-value" style="color: var(--color-warning);" id="atRisk">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Interventions (Month)</div>
+                <div class="stat-value" style="color: var(--color-info);" id="interventions">--</div>
+            </div>
+        </div>
+
+        <!-- Wellness Trends Over Time -->
+        <div class="chart-container">
+            <h3 style="margin-bottom: var(--space-4);">
+                <span data-i18n="admin.trends">Wellness Score Trends</span> 📈
+            </h3>
+            <div id="wellnessTrend" style="overflow-x: auto;">
+                <div style="display: flex; gap: var(--space-4); min-width: 600px; align-items: flex-end; height: 200px; padding: var(--space-4);"
+                    id="trendChart">
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Participation Trends -->
+        <div class="chart-container">
+            <h3 style="margin-bottom: var(--space-4);">Exercise Participation Rate 🏃</h3>
+            <div id="exerciseTrend" style="overflow-x: auto;">
+                <div style="display: flex; gap: var(--space-4); min-width: 600px; align-items: flex-end; height: 200px; padding: var(--space-4);"
+                    id="exerciseChart">
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribution Charts -->
+        <div class="grid grid-cols-2" style="margin-bottom: var(--space-6);">
+            <!-- Stress Levels Distribution -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: var(--space-4);">Stress Levels Distribution 🧠</h3>
+                <div class="distribution-bar" id="stressDistribution"></div>
+                <div
+                    style="display: flex; justify-content: space-between; font-size: var(--font-size-sm); margin-top: var(--space-2);">
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-success); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        Low: <span id="lowStress">--</span>%</div>
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-warning); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        Moderate: <span id="modStress">--</span>%</div>
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-danger); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        High: <span id="highStress">--</span>%</div>
+                </div>
+            </div>
+
+            <!-- Screen Time Distribution -->
+            <div class="chart-container">
+                <h3 style="margin-bottom: var(--space-4);">Screen Time Distribution 📱</h3>
+                <div class="distribution-bar" id="screenDistribution"></div>
+                <div
+                    style="display: flex; justify-content: space-between; font-size: var(--font-size-sm); margin-top: var(--space-2);">
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-success); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        Healthy: <span id="healthyScreen">--</span>%</div>
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-warning); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        Moderate: <span id="modScreen">--</span>%</div>
+                    <div><span class="risk-indicator"
+                            style="background: var(--color-danger); width: 12px; height: 12px; display: inline-block; margin-right: var(--space-1); border-radius: 50%;"></span>
+                        Excessive: <span id="excessiveScreen">--</span>%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Patterns & Correlations -->
+        <div class="card" style="margin-bottom: var(--space-6);">
+            <div class="card-header">
+                <h3 class="card-title">Risk Patterns & Policy Insights 🎯</h3>
+            </div>
+            <div class="card-body" id="riskPatterns">
+                <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Anonymous Data Notice -->
+        <div class="alert alert-info">
+            <div class="alert-icon">🔒</div>
+            <div class="alert-content">
+                <div class="alert-title" data-i18n="admin.anonymous_data">Anonymous Insights Only</div>
+                <p>All data is aggregated and anonymized. No individual student data is exposed. This dashboard is
+                    designed for policy-making and program effectiveness evaluation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script>
+        (async function () {
+            await i18n.init();
+
+            document.getElementById('languageSelect').addEventListener('change', async (e) => {
+                await i18n.changeLanguage(e.target.value);
+            });
+
+            if (!authService.requireAuth(['admin'])) return;
+
+            const user = authService.getCurrentUser();
+            document.getElementById('adminName').textContent = user.name.split(' ')[1];
+
+            renderDashboard();
+        })();
+
+        function renderDashboard() {
+            const analytics = dataService.getAdminAnalytics();
+
+            // Render overall stats
+            document.getElementById('totalStudents').textContent = utils.formatNumber(analytics.overallStats.totalStudents);
+            document.getElementById('activeUsers').textContent = utils.formatNumber(analytics.overallStats.activeUsers);
+            document.getElementById('avgWellness').textContent = analytics.overallStats.avgWellnessScore;
+            document.getElementById('atRisk').textContent = analytics.overallStats.atRiskStudents;
+            document.getElementById('interventions').textContent = analytics.overallStats.interventionsThisMonth;
+
+            // Render wellness trend chart
+            renderTrendChart(analytics.trendsData.wellnessScores, 'trendChart', 'var(--color-primary)');
+
+            // Render exercise trend chart
+            renderTrendChart(analytics.trendsData.exerciseParticipation, 'exerciseChart', 'var(--color-success)', true);
+
+            // Render distributions
+            renderDistribution('stressDistribution', analytics.trendsData.stressLevels);
+            document.getElementById('lowStress').textContent = analytics.trendsData.stressLevels.low;
+            document.getElementById('modStress').textContent = analytics.trendsData.stressLevels.moderate;
+            document.getElementById('highStress').textContent = analytics.trendsData.stressLevels.high;
+
+            renderDistribution('screenDistribution', analytics.trendsData.screenTimeDistribution);
+            document.getElementById('healthyScreen').textContent = analytics.trendsData.screenTimeDistribution.healthy;
+            document.getElementById('modScreen').textContent = analytics.trendsData.screenTimeDistribution.moderate;
+            document.getElementById('excessiveScreen').textContent = analytics.trendsData.screenTimeDistribution.excessive;
+
+            // Render risk patterns
+            renderRiskPatterns(analytics.riskPatterns);
+        }
+
+        function renderTrendChart(data, containerId, color, isPercentage = false) {
+            const container = document.getElementById(containerId);
+            const maxValue = Math.max(...data.map(d => isPercentage ? d.percentage : d.avg));
+
+            container.innerHTML = data.map(item => {
+                const value = isPercentage ? item.percentage : item.avg;
+                const height = (value / maxValue) * 100;
+
+                return `
+          <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+            <div style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-2);">
+              ${value}${isPercentage ? '%' : ''}
+            </div>
+            <div style="width: 100%; background: ${color}; height: ${height}%; border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 20px;"></div>
+            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-top: var(--space-2);">
+              ${item.month}
+            </div>
+          </div>
+        `;
+            }).join('');
+        }
+
+        function renderDistribution(containerId, data) {
+            const container = document.getElementById(containerId);
+            const values = Object.values(data);
+            const total = values.reduce((a, b) => a + b, 0);
+
+            const segments = [
+                { value: data.low || data.healthy, color: 'var(--color-success)' },
+                { value: data.moderate, color: 'var(--color-warning)' },
+                { value: data.high || data.excessive, color: 'var(--color-danger)' }
+            ];
+
+            container.innerHTML = segments.map(segment => `
+        <div class="distribution-segment" style="width: ${(segment.value / total) * 100}%; background: ${segment.color};">
+          ${segment.value}%
+        </div>
+      `).join('');
+        }
+
+        function renderRiskPatterns(patterns) {
+            const container = document.getElementById('riskPatterns');
+
+            container.innerHTML = patterns.map(pattern => `
+        <div class="risk-pattern-item">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+            <div>
+              <h4 style="margin: 0; margin-bottom: var(--space-1);">${pattern.category}</h4>
+              <p style="margin: 0; font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                ${pattern.affected} students affected
+              </p>
+            </div>
+            <span class="trend-indicator trend-${pattern.trend}">
+              ${pattern.trend === 'increasing' ? '↑' : pattern.trend === 'decreasing' ? '↓' : '→'} ${pattern.trend}
+            </span>
+          </div>
+          <div style="padding: var(--space-3); background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+            <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary); margin-bottom: var(--space-1);">
+              Correlation Analysis:
+            </div>
+            <div style="font-size: var(--font-size-sm); color: var(--color-text-primary);">
+              ${pattern.correlation}
+            </div>
+          </div>
+        </div>
+      `).join('');
+        }
+    </script>
+</body>
+
+</html>

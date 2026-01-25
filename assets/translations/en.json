@@ -1,0 +1,166 @@
+{
+  "app": {
+    "title": "Student Health & Wellbeing Platform",
+    "subtitle": "AI-Based Early Warning System",
+    "tagline": "Building healthier, happier students across India"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "auth": {
+    "welcome": "Welcome Back",
+    "login_title": "Sign In to Your Account",
+    "register_title": "Create New Account",
+    "username": "Username",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "email": "Email Address",
+    "role": "Select Your Role",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "login_button": "Sign In",
+    "register_button": "Register",
+    "no_account": "Don't have an account?",
+    "have_account": "Already have an account?",
+    "sign_up": "Sign up",
+    "sign_in": "Sign in"
+  },
+  "roles": {
+    "student": "Student",
+    "parent": "Parent",
+    "counselor": "Counselor",
+    "admin": "Institute Admin"
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "overview": "Overview",
+    "quick_actions": "Quick Actions",
+    "recent_activity": "Recent Activity",
+    "alerts": "Alerts",
+    "notifications": "Notifications"
+  },
+  "student": {
+    "dashboard_title": "Student Dashboard",
+    "wellness_score": "Wellness Score",
+    "points_balance": "Royalty Points",
+    "tasks_completed": "Tasks Completed",
+    "activity_streak": "Activity Streak",
+    "todo_title": "My To-Do List",
+    "add_task": "Add New Task",
+    "exercise_tracker": "Exercise Tracker",
+    "log_activity": "Log Activity",
+    "timetable": "My Timetable",
+    "exam_schedule": "Exam Schedule",
+    "rewards": "Rewards & Redemption",
+    "redeem_points": "Redeem Points",
+    "sos_button": "Emergency SOS",
+    "health_metrics": "Health Metrics"
+  },
+  "parent": {
+    "dashboard_title": "Parent Dashboard",
+    "student_progress": "Student Progress",
+    "positive_alerts": "Positive Notifications",
+    "wellness_trends": "Wellness Trends",
+    "communication": "Communication",
+    "consent_settings": "Privacy & Consent"
+  },
+  "counselor": {
+    "dashboard_title": "Counselor Dashboard",
+    "early_warnings": "Early Warning Alerts",
+    "students_list": "Students Overview",
+    "intervention_tools": "Intervention Tools",
+    "resources": "Resource Library",
+    "case_notes": "Case Notes"
+  },
+  "admin": {
+    "dashboard_title": "Admin Dashboard",
+    "analytics": "Policy Analytics",
+    "trends": "Trend Visualization",
+    "reports": "Reports",
+    "effectiveness": "Program Effectiveness",
+    "anonymous_data": "Anonymous Insights"
+  },
+  "tasks": {
+    "study": "Study",
+    "exercise": "Exercise",
+    "sleep": "Sleep",
+    "digital_detox": "Digital Detox",
+    "mental_wellness": "Mental Wellness",
+    "pending": "Pending",
+    "completed": "Completed",
+    "overdue": "Overdue",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    }
+  },
+  "activities": {
+    "running": "Running",
+    "walking": "Walking",
+    "cycling": "Cycling",
+    "yoga": "Yoga",
+    "sports": "Sports",
+    "gym": "Gym Workout",
+    "duration": "Duration (minutes)",
+    "steps": "Steps Count",
+    "log": "Log Activity"
+  },
+  "alerts": {
+    "positive": "Great Progress!",
+    "warning": "Attention Needed",
+    "info": "Information",
+    "success": "Success!"
+  },
+  "rewards": {
+    "available": "Available Rewards",
+    "stationery": "Stationery Items",
+    "wellness": "Wellness Perks",
+    "campus": "Campus Benefits",
+    "points_required": "Points Required",
+    "redeem": "Redeem Now"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "no_data": "No data available",
+    "error": "An error occurred",
+    "success_message": "Operation successful"
+  },
+  "privacy": {
+    "disclaimer": "This is not a diagnostic system. For serious concerns, please contact mental health professionals.",
+    "consent_required": "Student consent required to view this data",
+    "data_protected": "All data is encrypted and protected",
+    "support_not_surveillance": "Designed for support, not surveillance"
+  },
+  "emergency": {
+    "sos_title": "Emergency Support",
+    "national_helpline": "National Mental Health Helpline",
+    "emergency_contacts": "Emergency Contacts",
+    "alert_sent": "Alert sent to counselor and emergency contacts"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "light_mode": "Light Mode",
+    "dark_mode": "Dark Mode",
+    "notifications": "Notification Preferences",
+    "privacy": "Privacy Settings",
+    "account": "Account Settings"
+  }
+}

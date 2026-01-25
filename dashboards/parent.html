@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="parent.dashboard_title">Parent Dashboard</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .notification-card {
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: var(--space-5);
+            margin-bottom: var(--space-4);
+            border-left: 4px solid var(--color-success);
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-base);
+            animation: fadeIn var(--transition-base);
+        }
+
+        .notification-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(4px);
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+        }
+
+        .notification-icon {
+            font-size: var(--font-size-3xl);
+        }
+
+        .notification-title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .notification-date {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-tertiary);
+            margin-left: auto;
+        }
+
+        .notification-message {
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+
+        .progress-section {
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-6);
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-3);
+        }
+
+        .metric-label {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+
+        .metric-value {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                <span data-i18n="app.title">Wellbeing Platform</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+                <select id="languageSelect" class="form-select"
+                    style="width: auto; padding: var(--space-2) var(--space-3);">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+                <button class="btn btn-outline btn-sm" onclick="authService.logout()">
+                    <span data-i18n="nav.logout">Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Welcome Section -->
+        <div class="card card-gradient" style="margin-bottom: var(--space-6);">
+            <h2 style="margin: 0;"><span data-i18n="dashboard.welcome">Welcome</span>, <span
+                    id="parentName">Parent</span>! 👨‍👩‍👧</h2>
+            <p style="margin-top: var(--space-2); margin-bottom: 0; opacity: 0.9;">
+                Track your child's wellness journey and celebrate their achievements together.
+            </p>
+        </div>
+
+        <!-- Student Info Card -->
+        <div class="card" style="margin-bottom: var(--space-6);">
+            <div class="card-header">
+                <h3 class="card-title">Student Information</h3>
+                <span class="badge badge-success">Consent Given ✓</span>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3">
+                    <div>
+                        <div class="text-sm text-secondary">Student Name</div>
+                        <div class="text-lg font-semibold" id="studentInfo">--</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-secondary">Grade</div>
+                        <div class="text-lg font-semibold" id="studentGrade">--</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-secondary">Institution</div>
+                        <div class="text-lg font-semibold" id="studentInstitution">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Positive Notifications Section -->
+        <div style="margin-bottom: var(--space-6);">
+            <h3 style="margin-bottom: var(--space-4);">
+                <span data-i18n="parent.positive_alerts">Positive Notifications</span> 🎉
+            </h3>
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+                Celebrating your child's healthy habits and achievements
+            </p>
+            <div id="notificationsList">
+                <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Student Progress Overview -->
+        <div class="progress-section">
+            <h3 style="margin-bottom: var(--space-4);" data-i18n="parent.student_progress">Student Progress</h3>
+            <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+                Overview of your child's wellness metrics (with consent)
+            </p>
+
+            <div class="metric-row">
+                <div class="metric-label">🌟 Overall Wellness Score</div>
+                <div class="metric-value" id="parentWellnessScore">--</div>
+            </div>
+
+            <div class="metric-row">
+                <div class="metric-label">💎 Royalty Points Earned</div>
+                <div class="metric-value" id="parentPointsBalance">--</div>
+            </div>
+
+            <div class="metric-row">
+                <div class="metric-label">✅ Tasks Completed This Week</div>
+                <div class="metric-value" id="parentTasksCompleted">--</div>
+            </div>
+
+            <div class="metric-row">
+                <div class="metric-label">🔥 Activity Streak</div>
+                <div class="metric-value" id="parentActivityStreak">-- days</div>
+            </div>
+        </div>
+
+        <!-- Wellness Trends -->
+        <div class="card" style="margin-bottom: var(--space-6);">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="parent.wellness_trends">Wellness Trends</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Physical Health</div>
+                        <div class="stat-value" style="color: var(--color-success);" id="physicalHealth">--</div>
+                        <div class="stat-change positive">
+                            <span>↑</span>
+                            <span>Active & Healthy</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Sleep Quality</div>
+                        <div class="stat-value" style="color: var(--color-info);" id="sleepQuality">--/10</div>
+                        <div class="stat-change positive">
+                            <span>😴</span>
+                            <span>Good Rest</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Digital Wellbeing</div>
+                        <div class="stat-value" style="color: var(--color-warning);" id="screenTime">-- hrs</div>
+                        <div class="stat-change">
+                            <span>📱</span>
+                            <span>Moderate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communication Section -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="parent.communication">Communication</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <div class="alert-icon">💬</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Secure Messaging Available</div>
+                        <p>Contact your child's counselor for support or questions about their wellness journey.</p>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top: var(--space-3);">
+                    <span>Send Message to Counselor</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Privacy Notice -->
+        <div class="alert alert-info" style="margin-top: var(--space-6);">
+            <div class="alert-icon">🔒</div>
+            <div class="alert-content">
+                <div class="alert-title" data-i18n="privacy.support_not_surveillance">
+                    Designed for support, not surveillance
+                </div>
+                <p data-i18n="privacy.data_protected">
+                    All data is encrypted and protected. Access is strictly consent-based.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script>
+        // Initialize dashboard
+        (async function () {
+            await i18n.init();
+
+            document.getElementById('languageSelect').addEventListener('change', async (e) => {
+                await i18n.changeLanguage(e.target.value);
+            });
+
+            if (!authService.requireAuth(['parent'])) return;
+
+            const user = authService.getCurrentUser();
+            document.getElementById('parentName').textContent = user.name;
+
+            // Load student data
+            const studentUser = mockData.users['student1'];
+            const studentData = dataService.getStudentData(user.linkedStudent);
+
+            if (studentUser && studentData) {
+                // Populate student info
+                document.getElementById('studentInfo').textContent = studentUser.name;
+                document.getElementById('studentGrade').textContent = studentUser.grade;
+                document.getElementById('studentInstitution').textContent = studentUser.institution;
+
+                // Populate metrics
+                document.getElementById('parentWellnessScore').textContent = studentData.wellnessScore;
+                document.getElementById('parentPointsBalance').textContent = utils.formatNumber(studentData.pointsBalance);
+                document.getElementById('parentTasksCompleted').textContent = studentData.tasksCompleted;
+                document.getElementById('parentActivityStreak').textContent = studentData.activityStreak + ' days';
+
+                // Wellness trends
+                document.getElementById('physicalHealth').textContent = studentData.physicalHealth.healthScore;
+                document.getElementById('sleepQuality').textContent = studentData.mentalWellness.sleepQuality;
+                document.getElementById('screenTime').textContent = studentData.digitalWellbeing.avgScreenTime;
+            }
+
+            // Load and render positive notifications
+            renderNotifications(user.id);
+        })();
+
+        function renderNotifications(parentId) {
+            const notifications = dataService.getParentNotifications(parentId);
+            const notificationsList = document.getElementById('notificationsList');
+
+            if (!notifications || notifications.length === 0) {
+                notificationsList.innerHTML = '<p class="text-center text-secondary">No notifications yet.</p>';
+                return;
+            }
+
+            notificationsList.innerHTML = notifications.map(notif => `
+        <div class="notification-card">
+          <div class="notification-header">
+            <div class="notification-icon">${notif.icon}</div>
+            <div style="flex: 1;">
+              <div class="notification-title">${notif.title}</div>
+            </div>
+            <div class="notification-date">${utils.formatDateRelative(notif.date)}</div>
+          </div>
+          <div class="notification-message">${notif.message}</div>
+        </div>
+      `).join('');
+        }
+    </script>
+</body>
+
+</html>

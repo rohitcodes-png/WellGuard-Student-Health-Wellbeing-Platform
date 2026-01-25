@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Wellness Check</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .checkin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+
+        .form-section {
+            background: var(--color-bg-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-6);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .range-container {
+            margin: var(--space-4) 0;
+        }
+
+        .range-input {
+            width: 100%;
+            height: 8px;
+            border-radius: var(--radius-full);
+            background: var(--color-bg-tertiary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .range-input::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-tertiary);
+        }
+
+        .range-value {
+            display: inline-block;
+            padding: var(--space-2) var(--space-4);
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--radius-full);
+            font-weight: var(--font-weight-bold);
+            margin-left: var(--space-3);
+        }
+
+        .input-icon {
+            font-size: 2rem;
+            margin-right: var(--space-3);
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-5);
+        }
+
+        .quick-select {
+            display: flex;
+            gap: var(--space-2);
+            margin-top: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            padding: var(--space-2) var(--space-4);
+            border: 2px solid var(--color-border);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-sm);
+        }
+
+        .quick-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .mood-selector {
+            display: flex;
+            justify-content: space-around;
+            gap: var(--space-3);
+            margin-top: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        .mood-option {
+            flex: 1;
+            min-width: 80px;
+            padding: var(--space-4);
+            text-align: center;
+            border: 3px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .mood-option:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-4px);
+        }
+
+        .mood-option.selected {
+            border-color: var(--color-primary);
+            background: var(--color-bg-tertiary);
+        }
+
+        .mood-option .emoji {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: var(--space-2);
+        }
+
+        .mood-option .label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            background: var(--gradient-success);
+            color: white;
+            border-radius: var(--radius-full);
+            font-weight: var(--font-weight-bold);
+            margin-top: var(--space-4);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">📋</span>
+                <span>Daily Wellness Check</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-sm btn-outline" onclick="window.location.href='student.html'">← Back to
+                    Dashboard</button>
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+                <select id="languageSelect" class="form-select"
+                    style="width: auto; padding: var(--space-2) var(--space-3);">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <div class="checkin-container">
+        <!-- Header -->
+        <div class="card card-gradient" style="margin-bottom: var(--space-8); text-align: center;">
+            <h1 style="margin: 0; font-size: var(--font-size-4xl);">📋 Daily Wellness Check-In</h1>
+            <p style="margin-top: var(--space-3); margin-bottom: 0; opacity: 0.9; font-size: var(--font-size-lg);">
+                Track your daily wellbeing and build healthy habits
+            </p>
+            <div class="streak-badge">
+                🔥 7 Day Streak!
+            </div>
+        </div>
+
+        <!-- Wellness Check Form -->
+        <div class="form-section">
+            <form id="wellnessCheckForm">
+                <!-- Sleep Hours -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">😴</span>
+                        Sleep Hours Last Night
+                    </label>
+                    <div class="form-row">
+                        <input type="number" id="sleepHours" class="form-input" min="0" max="12" step="0.5" value="7"
+                            required style="max-width: 150px;">
+                        <span style="margin-left: var(--space-2); color: var(--color-text-secondary);">hours</span>
+                    </div>
+                    <div class="quick-select">
+                        <button type="button" class="quick-btn" onclick="setVal('sleepHours', 6)">6h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('sleepHours', 7)">7h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('sleepHours', 8)">8h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('sleepHours', 9)">9h</button>
+                    </div>
+                </div>
+
+                <!-- Stress Level -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">😰</span>
+                        Current Stress Level
+                        <span class="range-value" id="stressValue">3</span>
+                    </label>
+                    <div class="range-container">
+                        <input type="range" id="stressLevel" class="range-input" min="1" max="5" value="3"
+                            oninput="updateValue('stress', this.value)">
+                        <div class="range-labels">
+                            <span>😊 Low</span>
+                            <span>😐 Moderate</span>
+                            <span>😰 High</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mood Selection -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">😊</span>
+                        How are you feeling today?
+                    </label>
+                    <div class="mood-selector">
+                        <div class="mood-option" onclick="selectMood('amazing')">
+                            <span class="emoji">🤩</span>
+                            <span class="label">Amazing</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('happy')">
+                            <span class="emoji">😊</span>
+                            <span class="label">Happy</span>
+                        </div>
+                        <div class="mood-option selected" onclick="selectMood('okay')">
+                            <span class="emoji">😐</span>
+                            <span class="label">Okay</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('sad')">
+                            <span class="emoji">😢</span>
+                            <span class="label">Sad</span>
+                        </div>
+                        <div class="mood-option" onclick="selectMood('stressed')">
+                            <span class="emoji">😰</span>
+                            <span class="label">Stressed</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="mood" value="okay" required>
+                </div>
+
+                <!-- Screen Time -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">📱</span>
+                        Screen Time Yesterday
+                    </label>
+                    <div class="form-row">
+                        <input type="number" id="screenTime" class="form-input" min="0" max="24" step="0.5" value="4"
+                            required style="max-width: 150px;">
+                        <span style="margin-left: var(--space-2); color: var(--color-text-secondary);">hours</span>
+                    </div>
+                    <div class="quick-select">
+                        <button type="button" class="quick-btn" onclick="setVal('screenTime', 2)">2h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('screenTime', 4)">4h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('screenTime', 6)">6h</button>
+                        <button type="button" class="quick-btn" onclick="setVal('screenTime', 8)">8h+</button>
+                    </div>
+                </div>
+
+                <!-- Physical Activity -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">💪</span>
+                        Physical Activity This Week
+                    </label>
+                    <div class="form-row">
+                        <input type="number" id="physicalActivity" class="form-input" min="0" max="7" value="3" required
+                            style="max-width: 150px;">
+                        <span style="margin-left: var(--space-2); color: var(--color-text-secondary);">days</span>
+                    </div>
+                    <div class="quick-select">
+                        <button type="button" class="quick-btn" onclick="setVal('physicalActivity', 0)">None</button>
+                        <button type="button" class="quick-btn" onclick="setVal('physicalActivity', 2)">2 days</button>
+                        <button type="button" class="quick-btn" onclick="setVal('physicalActivity', 4)">4 days</button>
+                        <button type="button" class="quick-btn" onclick="setVal('physicalActivity', 7)">Daily</button>
+                    </div>
+                </div>
+
+                <!-- Academic Pressure -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="input-icon">📚</span>
+                        Academic Pressure Level
+                        <span class="range-value" id="academicValue">3</span>
+                    </label>
+                    <div class="range-container">
+                        <input type="range" id="academicPressure" class="range-input" min="1" max="5" value="3"
+                            oninput="updateValue('academic', this.value)">
+                        <div class="range-labels">
+                            <span>😌 Relaxed</span>
+                            <span>📖 Manageable</span>
+                            <span>📚 Intense</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary"
+                    style="width: 100%; padding: var(--space-4); font-size: var(--font-size-lg); margin-top: var(--space-6);">
+                    ✅ Submit Daily Check-In
+                </button>
+            </form>
+        </div>
+
+        <!-- Recent Check-Ins -->
+        <div class="card">
+            <h3 style="margin-bottom: var(--space-4);">📊 Your Week at a Glance</h3>
+            <div class="grid grid-cols-2">
+                <div class="stat-card">
+                    <div class="stat-label">Average Sleep</div>
+                    <div class="stat-value" style="color: var(--color-success);">7.5 hrs</div>
+                    <div class="stat-change positive">
+                        <span>↑</span>
+                        <span>Improving</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Screen Time</div>
+                    <div class="stat-value" style="color: var(--color-warning);">4.2 hrs</div>
+                    <div class="stat-change">
+                        <span>→</span>
+                        <span>Moderate</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Activity Days</div>
+                    <div class="stat-value" style="color: var(--color-primary);">4/7</div>
+                    <div class="stat-change positive">
+                        <span>💪</span>
+                        <span>Good!</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Overall Mood</div>
+                    <div class="stat-value">😊</div>
+                    <div class="stat-change positive">
+                        <span>Happy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="alert alert-info" style="margin-top: var(--space-6);">
+            <div class="alert-icon">💡</div>
+            <div class="alert-content">
+                <div class="alert-title">Daily Check-In Benefits</div>
+                <p>Regular wellness tracking helps identify patterns, build healthy habits, and enables early
+                    intervention when needed. Your data is private and used only to support your wellbeing journey.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ai-engine.js"></script>
+    <script src="../js/credits.js"></script>
+
+    <script>
+        // Initialize
+        (async function () {
+            await i18n.init();
+            document.getElementById('languageSelect').addEventListener('change', async (e) => {
+                await i18n.changeLanguage(e.target.value);
+            });
+
+            // Load existing check-ins to calculate streak
+            const checkins = JSON.parse(localStorage.getItem('wellnessCheckins') || '[]');
+            const streak = creditsSystem.calculateStreak(checkins);
+            if (streak > 0) {
+                document.querySelector('.streak-badge').textContent = `🔥 ${streak} Day Streak!`;
+            }
+        })();
+
+        // Update range display values
+        function updateValue(type, value) {
+            if (type === 'stress') {
+                document.getElementById('stressValue').textContent = value;
+            } else if (type === 'academic') {
+                document.getElementById('academicValue').textContent = value;
+            }
+        }
+
+        // Quick set values
+        function setVal(fieldId, value) {
+            document.getElementById(fieldId).value = value;
+        }
+
+        // Select mood
+        let selectedMood = 'okay';
+        function selectMood(mood) {
+            document.querySelectorAll('.mood-option').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.mood-option').classList.add('selected');
+            document.getElementById('mood').value = mood;
+            selectedMood = mood;
+        }
+
+        // Handle form submission with AI Engine
+        document.getElementById('wellnessCheckForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                sleepHours: parseFloat(document.getElementById('sleepHours').value),
+                stressLevel: parseInt(document.getElementById('stressLevel').value),
+                mood: document.getElementById('mood').value,
+                screenTime: parseFloat(document.getElementById('screenTime').value),
+                physicalActivity: parseInt(document.getElementById('physicalActivity').value),
+                academicPressure: parseInt(document.getElementById('academicPressure').value),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            // Get historical data
+            const checkins = JSON.parse(localStorage.getItem('wellnessCheckins') || '[]');
+            formData.history = checkins;
+
+            // Calculate AI Risk Scores
+            const risks = aiEngine.calculateAllRisks(formData);
+
+            // Calculate credits earned
+            const currentCredits = parseInt(localStorage.getItem('totalCredits') || '0');
+            const creditResult = creditsSystem.calculateCreditsEarned('wellnessCheckIn', { creditsBalance: currentCredits }, checkins);
+
+            // Store entry with risk scores
+            const entry = {
+                ...formData,
+                wellbeingIndex: risks.wellbeingIndex.score,
+                mentalHealthScore: risks.mentalHealth.score,
+                lifestyleScore: risks.lifestyle.score,
+                digitalWellbeingScore: risks.digitalWellbeing.score,
+                physicalHealthScore: risks.physicalHealth.score,
+                persona: risks.persona.type,
+                creditsEarned: creditResult.earned,
+                type: 'checkIn'
+            };
+
+            delete entry.history; // Don't store nested history
+            checkins.push(entry);
+            localStorage.setItem('wellnessCheckins', JSON.stringify(checkins));
+
+            // Update credits
+            localStorage.setItem('totalCredits', creditResult.newTotal.toString());
+
+            // Show comprehensive feedback modal
+            showFeedbackModal(risks, creditResult);
+        });
+
+        function showFeedbackModal(risks, creditResult) {
+            const modal = document.createElement('div');
+            modal.className = 'modal-backdrop';
+
+            // Get color for wellbeing score
+            const getColorClass = (color) => {
+                if (color === 'green') return 'success';
+                if (color === 'yellow') return 'warning';
+                return 'danger';
+            };
+
+            modal.innerHTML = `
+                <div class="modal" style="max-width: 700px;">
+                    <div class="modal-header">
+                        <h3 class="modal-title">📊 Your Wellbeing Insights</h3>
+                        <button class="modal-close" onclick="this.closest('.modal-backdrop').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Wellbeing Index -->
+                        <div style="text-align: center; margin-bottom: var(--space-6);">
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-2);">
+                                Overall Wellbeing Index
+                            </div>
+                            <div style="font-size: 4rem; font-weight: var(--font-weight-extrabold); color: var(--color-${getColorClass(risks.wellbeingIndex.color)}); margin-bottom: var(--space-2);">
+                                ${risks.wellbeingIndex.score}
+                            </div>
+                            <div class="badge badge-${getColorClass(risks.wellbeingIndex.color)}" style="font-size: var(--font-size-base);">
+                                ${risks.wellbeingIndex.level}
+                            </div>
+                        </div>
+
+                        <!-- Persona Banner -->
+                        <div class="alert alert-info" style="background: ${risks.persona.color}20; border-left-color: ${risks.persona.color};">
+                            <div class="alert-icon" style="font-size: 2rem;">${risks.persona.emoji}</div>
+                            <div class="alert-content">
+                                <div class="alert-title">${risks.persona.title}</div>
+                                <p>${risks.persona.message}</p>
+                            </div>
+                        </div>
+
+                        <!-- Risk Breakdown -->
+                        <h4 style="margin-top: var(--space-6); margin-bottom: var(--space-3);">Risk Breakdown</h4>
+                        <div class="grid grid-cols-2" style="gap: var(--space-3); margin-bottom: var(--space-4);">
+                            ${renderRiskCard('Mental Health', risks.mentalHealth)}
+                            ${renderRiskCard('Lifestyle', risks.lifestyle)}
+                            ${renderRiskCard('Digital Wellbeing', risks.digitalWellbeing)}
+                            ${renderRiskCard('Physical Health', risks.physicalHealth)}
+                        </div>
+
+                        <!-- Why This Changed -->
+                        <div class="alert alert-${getColorClass(risks.wellbeingIndex.color)}">
+                            <div class="alert-icon">💡</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Why Your Score Changed</div>
+                                <ul style="margin: var(--space-2) 0 0 var(--space-4); padding: 0;">
+                                    ${risks.explanations.whyThisChanged.map(reason => `<li>${reason}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Personalized Tips -->
+                        <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-3);">Personalized Tips for You</h4>
+                        <div style="background: var(--color-bg-secondary); padding: var(--space-4); border-radius: var(--radius-md);">
+                            <ul style="margin: 0; padding-left: var(--space-4);">
+                                ${risks.persona.tips.map(tip => `<li style="margin-bottom: var(--space-2);">${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Credits Earned -->
+                        ${creditResult.earned > 0 ? `
+                        <div class="alert alert-success" style="margin-top: var(--space-4);">
+                            <div class="alert-icon">💎</div>
+                            <div class="alert-content">
+                                <div class="alert-title">Credits Earned!</div>
+                                <p>+${creditResult.earned} wellbeing credits (Total: ${creditResult.newTotal})</p>
+                                <p style="font-size: var(--font-size-sm); margin-top: var(--space-2);">${creditResult.reason}</p>
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        <!-- Trend -->
+                        ${risks.trend ? `
+                        <div style="margin-top: var(--space-4); padding: var(--space-3); background: var(--color-bg-secondary); border-radius: var(--radius-md); text-align: center;">
+                            <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-1);">
+                                7-Day Trend
+                            </div>
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: ${risks.trend.color};">
+                                ${risks.trend.icon} ${risks.trend.direction.charAt(0).toUpperCase() + risks.trend.direction.slice(1)}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="this.closest('.modal-backdrop').remove()">Close</button>
+                        <button class="btn btn-primary" onclick="window.location.href='student.html'">View Full Dashboard</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.remove();
+            });
+
+            // Also show toast
+            utils.showToast('✅ Check-in complete! Your wellbeing data has been analyzed.', 'success');
+        }
+
+        function renderRiskCard(name, risk) {
+            const getColorClass = (color) => {
+                if (color === 'green') return 'success';
+                if (color === 'yellow') return 'warning';
+                return 'danger';
+            };
+
+            return `
+                <div style="padding: var(--space-3); background: var(--color-bg-secondary); border-radius: var(--radius-md); border-left: 4px solid var(--color-${getColorClass(risk.color)});">
+                    <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-1);">
+                        ${name}
+                    </div>
+                    <div style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-${getColorClass(risk.color)}); margin-bottom: var(--space-1);">
+                        ${risk.score}
+                    </div>
+                    <div class="badge badge-${getColorClass(risk.color)}" style="font-size: var(--font-size-xs);">
+                        ${risk.level}
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>

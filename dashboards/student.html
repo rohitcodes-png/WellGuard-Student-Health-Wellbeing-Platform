@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="student.dashboard_title">Student Dashboard</title>
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            padding: var(--space-6);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sos-button {
+            position: fixed;
+            bottom: var(--space-6);
+            right: var(--space-6);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--color-danger);
+            color: white;
+            border: none;
+            font-size: var(--font-size-2xl);
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            z-index: var(--z-fixed);
+            transition: all var(--transition-base);
+            animation: pulse 2s infinite;
+        }
+
+        .sos-button:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-2);
+            transition: all var(--transition-fast);
+        }
+
+        .task-item:hover {
+            background: var(--color-bg-tertiary);
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+        }
+
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+        }
+
+        .task-checkbox {
+            flex-shrink: 0;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-1);
+        }
+
+        .task-meta {
+            display: flex;
+            gap: var(--space-2);
+            flex-wrap: wrap;
+            font-size: var(--font-size-xs);
+        }
+
+        .exercise-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-3);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-2);
+        }
+
+        .timetable-grid {
+            display: grid;
+            gap: var(--space-2);
+        }
+
+        .timetable-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid;
+        }
+
+        .timetable-item.class {
+            border-left-color: var(--color-primary);
+        }
+
+        .timetable-item.study {
+            border-left-color: var(--color-info);
+        }
+
+        .timetable-item.exercise {
+            border-left-color: var(--color-success);
+        }
+
+        .timetable-item.break {
+            border-left-color: var(--color-warning);
+        }
+
+        .reward-item {
+            text-align: center;
+            padding: var(--space-4);
+            background: var(--color-bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--color-border);
+            transition: all var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .reward-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .reward-icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-2);
+        }
+
+        .reward-name {
+            font-weight: var(--font-weight-medium);
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-sm);
+        }
+
+        .reward-cost {
+            color: var(--color-primary);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .exam-card {
+            background: var(--color-bg-secondary);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--color-primary);
+            margin-bottom: var(--space-3);
+        }
+
+        .countdown-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-2) var(--space-3);
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                <span data-i18n="app.title">Wellbeing Platform</span>
+            </div>
+            <div class="navbar-actions">
+                <button class="btn btn-sm btn-secondary" onclick="window.location.href='wellness.html'"
+                    style="margin-right: var(--space-2);">
+                    🌟 Wellness Hub
+                </button>
+                <button class="btn btn-icon theme-toggle" title="Toggle Theme">🌙</button>
+                <select id="languageSelect" class="form-select"
+                    style="width: auto; padding: var(--space-2) var(--space-3);">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+                <button class="btn btn-outline btn-sm" onclick="authService.logout()">
+                    <span data-i18n="nav.logout">Logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-grid">
+        <!-- Welcome Card -->
+        <div class="card card-gradient" style="grid-column: span 2;">
+            <h2 style="margin: 0;"><span data-i18n="dashboard.welcome">Welcome</span>, <span
+                    id="studentName">Student</span>! 👋</h2>
+            <p style="margin-top: var(--space-2); margin-bottom: 0; opacity: 0.9;">Track your health, complete tasks,
+                and earn rewards for healthy habits.</p>
+        </div>
+
+        <!-- Wellness Stats -->
+        <div class="stat-card">
+            <div class="stat-label" data-i18n="student.wellness_score">Wellness Score</div>
+            <div class="stat-value" id="wellnessScore">--</div>
+            <div class="progress" style="margin-top: var(--space-3);">
+                <div class="progress-bar progress-bar-success" id="wellnessProgress" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label" data-i18n="student.points_balance">Royalty Points</div>
+            <div class="stat-value" style="color: var(--color-primary);" id="pointsBalance">--</div>
+            <div class="stat-change positive" style="margin-top: var(--space-2);">
+                <span>💎</span>
+                <span>Earn more by staying active!</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label" data-i18n="student.activity_streak">Activity Streak</div>
+            <div class="stat-value" id="activityStreak">--</div>
+            <div class="stat-change positive" style="margin-top: var(--space-2);">
+                <span>🔥</span>
+                <span>Days in a row</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-label" data-i18n="student.tasks_completed">Tasks Completed</div>
+            <div class="stat-value" id="tasksCompleted">--</div>
+            <div class="progress" style="margin-top: var(--space-3);">
+                <div class="progress-bar" id="tasksProgress" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- To-Do List -->
+        <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="student.todo_title">My To-Do List</h3>
+                <button class="btn btn-sm btn-primary" onclick="showAddTaskModal()">
+                    <span data-i18n="student.add_task">Add Task</span>
+                </button>
+            </div>
+            <div class="card-body" id="todoList">
+                <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Exercise Tracker -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="student.exercise_tracker">Exercise Tracker</h3>
+                <button class="btn btn-sm btn-secondary" onclick="showLogExerciseModal()">
+                    <span data-i18n="student.log_activity">Log Activity</span>
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="exerciseList">
+                    <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timetable -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="student.timetable">My Timetable</h3>
+            </div>
+            <div class="card-body">
+                <div id="timetableView">
+                    <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Schedule -->
+        <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="student.exam_schedule">Exam Schedule</h3>
+            </div>
+            <div class="card-body" id="examSchedule">
+                <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Rewards & Redemption -->
+        <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+                <h3 class="card-title" data-i18n="student.rewards">Rewards & Redemption</h3>
+                <div>
+                    <span class="badge badge-primary" style="font-size: var(--font-size-base);">
+                        💎 <span id="pointsDisplay">0</span> points
+                    </span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-4" id="rewardsGrid">
+                    <p class="text-center text-secondary" data-i18n="common.loading">Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOS Emergency Button -->
+    <button class="sos-button" onclick="showSOSModal()" title="Emergency SOS">
+        🆘
+    </button>
+
+    <!-- Scripts -->
+    <script src="../js/theme.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+
+    <script>
+        let studentData = null;
+
+        // Initialize dashboard
+        (async function () {
+            await i18n.init();
+
+            // Setup language selector
+            document.getElementById('languageSelect').addEventListener('change', async (e) => {
+                await i18n.changeLanguage(e.target.value);
+            });
+
+            // Check auth
+            if (!authService.requireAuth(['student'])) return;
+
+            // Load student data
+            const user = authService.getCurrentUser();
+            studentData = dataService.getStudentData(user.id);
+
+            if (studentData) {
+                document.getElementById('studentName').textContent = user.name;
+                renderDashboard();
+            }
+        })();
+
+        // Render dashboard
+        function renderDashboard() {
+            renderStats();
+            renderTodoList();
+            renderExerciseLog();
+            renderTimetable();
+            renderExamSchedule();
+            renderRewards();
+        }
+
+        // Render stats
+        function renderStats() {
+            document.getElementById('wellnessScore').textContent = studentData.wellnessScore;
+            document.getElementById('wellnessProgress').style.width = studentData.wellnessScore + '%';
+            document.getElementById('pointsBalance').textContent = utils.formatNumber(studentData.pointsBalance);
+            document.getElementById('pointsDisplay').textContent = utils.formatNumber(studentData.pointsBalance);
+            document.getElementById('activityStreak').textContent = studentData.activityStreak;
+            document.getElementById('tasksCompleted').textContent = studentData.tasksCompleted;
+
+            const totalTasks = studentData.tasks.length;
+            const completedTasks = studentData.tasks.filter(t => t.completed).length;
+            const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+            document.getElementById('tasksProgress').style.width = progress + '%';
+        }
+
+        // Render to-do list
+        function renderTodoList() {
+            const todoList = document.getElementById('todoList');
+
+            if (studentData.tasks.length === 0) {
+                todoList.innerHTML = '<p class="text-center text-secondary">No tasks yet. Add your first task!</p>';
+                return;
+            }
+
+            todoList.innerHTML = studentData.tasks.map(task => {
+                const deadline = utils.getDeadlineStatus(task.deadline);
+                const icon = utils.getTaskIcon(task.category);
+
+                return `
+          <div class="task-item ${task.completed ? 'completed' : ''}">
+            <input 
+              type="checkbox" 
+              class="form-checkbox task-checkbox" 
+              ${task.completed ? 'checked' : ''}
+              onchange="toggleTask('${task.id}')"
+            >
+            <div class="task-info">
+              <div class="task-title">${icon} ${task.title}</div>
+              <div class="task-meta">
+                <span class="badge ${deadline.class}">${deadline.text}</span>
+                <span class="badge badge-secondary">${i18n.t('tasks.' + task.category)}</span>
+                <span class="badge badge-info">${task.points} pts</span>
+              </div>
+            </div>
+          </div>
+        `;
+            }).join('');
+        }
+
+        // Toggle task
+        function toggleTask(taskId) {
+            const user = authService.getCurrentUser();
+            dataService.toggleTask(user.id, taskId);
+
+            // Reload data and re-render
+            studentData = dataService.getStudentData(user.id);
+            renderDashboard();
+
+            const task = studentData.tasks.find(t => t.id === taskId);
+            if (task && task.completed) {
+                utils.showToast(`Task completed! +${task.points} points earned! 🎉`, 'success');
+            }
+        }
+
+        // Render exercise log
+        function renderExerciseLog() {
+            const exerciseList = document.getElementById('exerciseList');
+
+            if (studentData.exercises.length === 0) {
+                exerciseList.innerHTML = '<p class="text-center text-secondary">No activities logged yet.</p>';
+                return;
+            }
+
+            exerciseList.innerHTML = studentData.exercises.slice(0, 5).map(ex => {
+                const icon = utils.getActivityIcon(ex.type);
+                return `
+          <div class="exercise-item">
+            <div>
+              <div style="font-weight: var(--font-weight-medium);">${icon} ${i18n.t('activities.' + ex.type)}</div>
+              <div style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                ${ex.duration} mins • ${utils.formatDateRelative(ex.date)}
+              </div>
+            </div>
+            <span class="badge badge-success">+${ex.points} pts</span>
+          </div>
+        `;
+            }).join('');
+        }
+
+        // Render timetable
+        function renderTimetable() {
+            const timetableView = document.getElementById('timetableView');
+            const mondaySchedule = studentData.timetable.filter(item => item.day === 'Monday');
+
+            timetableView.innerHTML = mondaySchedule.map(item => `
+        <div class="timetable-item ${item.type}">
+          <div style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);">
+            ${item.time}
+          </div>
+          <div style="font-weight: var(--font-weight-semibold);">
+            ${item.subject}
+          </div>
+          <span class="badge badge-${item.type === 'class' ? 'primary' : item.type === 'exercise' ? 'success' : 'info'}">
+            ${item.type}
+          </span>
+        </div>
+      `).join('');
+        }
+
+        // Render exam schedule
+        function renderExamSchedule() {
+            const examSchedule = document.getElementById('examSchedule');
+
+            examSchedule.innerHTML = studentData.exams.map(exam => {
+                const daysUntil = utils.daysUntil(exam.date);
+                return `
+          <div class="exam-card">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-3);">
+              <div>
+                <h4 style="margin: 0; margin-bottom: var(--space-1);">${exam.subject}</h4>
+                <p style="margin: 0; font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                  ${utils.formatDate(exam.date)} • ${exam.time} • ${exam.duration}
+                </p>
+              </div>
+              <div class="countdown-timer">
+                ⏰ ${daysUntil} days
+              </div>
+            </div>
+            <div class="progress" style="margin-bottom: var(--space-2);">
+              <div class="progress-bar progress-bar-${exam.preparationStatus === 'on-track' ? 'success' : 'warning'}" 
+                   style="width: ${exam.syllabus};"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: var(--font-size-sm);">
+              <span>Syllabus: ${exam.syllabus}</span>
+              <span class="badge badge-${exam.preparationStatus === 'on-track' ? 'success' : 'warning'}">
+                ${exam.preparationStatus}
+              </span>
+            </div>
+          </div>
+        `;
+            }).join('');
+        }
+
+        // Render rewards
+        function renderRewards() {
+            const rewardsGrid = document.getElementById('rewardsGrid');
+            const rewards = dataService.getRewards();
+            const allRewards = [...rewards.stationery, ...rewards.wellness, ...rewards.campus];
+
+            rewardsGrid.innerHTML = allRewards.slice(0, 8).map(reward => `
+        <div class="reward-item" onclick="redeemReward('${reward.id}', ${reward.points})">
+          <div class="reward-icon">${reward.image}</div>
+          <div class="reward-name">${reward.name}</div>
+          <div class="reward-cost">${reward.points} pts</div>
+        </div>
+      `).join('');
+        }
+
+        // Redeem reward
+        function redeemReward(rewardId, pointsCost) {
+            const user = authService.getCurrentUser();
+
+            if (studentData.pointsBalance < pointsCost) {
+                utils.showToast('Not enough points!', 'warning');
+                return;
+            }
+
+            utils.showConfirm(
+                'Redeem Reward',
+                `Are you sure you want to redeem this reward for ${pointsCost} points?`,
+                () => {
+                    if (dataService.redeemReward(user.id, rewardId, pointsCost)) {
+                        studentData = dataService.getStudentData(user.id);
+                        renderDashboard();
+                        utils.showToast('Reward redeemed successfully! 🎁', 'success');
+                    }
+                }
+            );
+        }
+
+        // Show add task modal
+        function showAddTaskModal() {
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Add New Task</h3>
+            <button class="modal-close" onclick="this.closest('.modal-backdrop').remove()">×</button>
+          </div>
+          <div class="modal-body">
+            <form id="addTaskForm">
+              <div class="form-group">
+                <label class="form-label">Task Title</label>
+                <input type="text" class="form-input" id="taskTitle" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="taskCategory" required>
+                  <option value="study">📚 Study</option>
+                  <option value="exercise">💪 Exercise</option>
+                  <option value="sleep">😴 Sleep</option>
+                  <option value="digital_detox">📵 Digital Detox</option>
+                  <option value="mental_wellness">🧘 Mental Wellness</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Deadline</label>
+                <input type="date" class="form-input" id="taskDeadline" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Points</label>
+                <input type="number" class="form-input" id="taskPoints" value="25" min="10" max="100">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline" onclick="this.closest('.modal-backdrop').remove()">Cancel</button>
+            <button class="btn btn-primary" onclick="addTask()">Add Task</button>
+          </div>
+        </div>
+      `;
+            document.body.appendChild(backdrop);
+        }
+
+        // Add task
+        function addTask() {
+            const title = document.getElementById('taskTitle').value;
+            const category = document.getElementById('taskCategory').value;
+            const deadline = document.getElementById('taskDeadline').value;
+            const points = parseInt(document.getElementById('taskPoints').value);
+
+            const user = authService.getCurrentUser();
+            dataService.addTask(user.id, { title, category, deadline, points, difficulty: 'medium' });
+
+            studentData = dataService.getStudentData(user.id);
+            renderDashboard();
+
+            document.querySelector('.modal-backdrop').remove();
+            utils.showToast('Task added successfully!', 'success');
+        }
+
+        // Show log exercise modal
+        function showLogExerciseModal() {
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">Log Exercise Activity</h3>
+            <button class="modal-close" onclick="this.closest('.modal-backdrop').remove()">×</button>
+          </div>
+          <div class="modal-body">
+            <form id="logExerciseForm">
+              <div class="form-group">
+                <label class="form-label">Activity Type</label>
+                <select class="form-select" id="exerciseType" required>
+                  <option value="running">🏃 Running</option>
+                  <option value="walking">🚶 Walking</option>
+                  <option value="cycling">🚴 Cycling</option>
+                  <option value="yoga">🧘 Yoga</option>
+                  <option value="sports">⚽ Sports</option>
+                  <option value="gym">💪 Gym Workout</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration (minutes)</label>
+                <input type="number" class="form-input" id="exerciseDuration" value="30" min="5" max="180" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Steps (if applicable)</label>
+                <input type="number" class="form-input" id="exerciseSteps" value="0">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline" onclick="this.closest('.modal-backdrop').remove()">Cancel</button>
+            <button class="btn btn-secondary" onclick="logExercise()">Log Activity</button>
+          </div>
+        </div>
+      `;
+            document.body.appendChild(backdrop);
+        }
+
+        // Log exercise
+        function logExercise() {
+            const type = document.getElementById('exerciseType').value;
+            const duration = parseInt(document.getElementById('exerciseDuration').value);
+            const steps = parseInt(document.getElementById('exerciseSteps').value) || 0;
+
+            const user = authService.getCurrentUser();
+            dataService.logExercise(user.id, { type, duration, steps });
+
+            studentData = dataService.getStudentData(user.id);
+            renderDashboard();
+
+            document.querySelector('.modal-backdrop').remove();
+            utils.showToast('Exercise logged! Points earned! 💪', 'success');
+        }
+
+        // Show SOS modal
+        function showSOSModal() {
+            const contacts = dataService.getEmergencyContacts();
+
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop';
+            backdrop.innerHTML = `
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">🆘 Emergency Support</h3>
+            <button class="modal-close" onclick="this.closest('.modal-backdrop').remove()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-content">
+                <div class="alert-title">Need Immediate Help?</div>
+                <p>Contact these helplines or your counselor immediately.</p>
+              </div>
+            </div>
+            
+            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-3);">National Helplines</h4>
+            ${contacts.nationalHelplines.map(c => `
+              <div style="padding: var(--space-3); background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                <div style="font-weight: var(--font-weight-semibold);">${c.name}</div>
+                <div style="font-size: var(--font-size-lg); color: var(--color-primary); margin: var(--space-1) 0;">📞 ${c.number}</div>
+                <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">${c.available}</div>
+              </div>
+            `).join('')}
+            
+            <h4 style="margin-top: var(--space-4); margin-bottom: var(--space-3);">Institution Contacts</h4>
+            ${contacts.institutionContacts.map(c => `
+              <div style="padding: var(--space-3); background: var(--color-bg-secondary); border-radius: var(--radius-md); margin-bottom: var(--space-2);">
+                <div style="font-weight: var(--font-weight-semibold);">${c.name}</div>
+                <div style="font-size: var(--font-size-lg); color: var(--color-primary); margin: var(--space-1) 0;">📞 ${c.number}</div>
+                <div style="font-size: var(--font-size-xs); color: var(--color-text-tertiary);">${c.available}</div>
+              </div>
+            `).join('')}
+            
+            <button class="btn btn-danger" style="width: 100%; margin-top: var(--space-4);" onclick="alertCounselor()">
+              Alert Counselor & Emergency Contacts
+            </button>
+          </div>
+        </div>
+      `;
+            document.body.appendChild(backdrop);
+        }
+
+        // Alert counselor
+        function alertCounselor() {
+            utils.showToast('Alert sent to counselor and emergency contacts!', 'success');
+            document.querySelector('.modal-backdrop').remove();
+        }
+    </script>
+</body>
+
+</html>
