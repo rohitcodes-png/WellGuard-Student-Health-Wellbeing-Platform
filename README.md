@@ -1,42 +1,11 @@
-# AI-Based Student Health & Wellbeing Platform
+# AI-Based Student Health & Wellbeing Platform (WellGaurd)
 
-## 🏆 Smart India Hackathon Project
+## 🏆 RIFT'26 ( TEAM: INNOVATRIX)
 
 A comprehensive national-level digital health infrastructure for students across India.
 
 ---
 
-## 🚀 Quick Start
-
-### Option 1: Using Live Server (Recommended)
-
-1. **Install Live Server in VS Code**
-   - Open VS Code
-   - Go to Extensions (Ctrl+Shift+X)
-   - Search for "Live Server"
-   - Install it
-
-2. **Run the Application**
-   - Right-click on `index.html`
-   - Select "Open with Live Server"
-   - Browser will open automatically at `http://localhost:5500`
-
-### Option 2: Simple Python Server
-
-```powershell
-# Navigate to project folder
-cd healthcare4
-
-# Run Python server
-python -m http.server 8000
-
-# Open browser to http://localhost:8000
-```
-
-### Option 3: Direct File Access
-
-- Simply open `index.html` in your browser
-- Note: Some features work best with a local server
 
 ---
 
@@ -215,7 +184,7 @@ healthcare4/
 
 ---
 
-## 🏅 Why This Wins SIH
+## why this is important
 
 1. **National Vision**: Not just an app, a scalable infrastructure
 2. **Positive Philosophy**: Support, not surveillance
@@ -235,18 +204,18 @@ healthcare4/
 - **No Dependencies**: Pure web technologies, no frameworks needed
 
 ---
-
-## 📞 Support
-
-For questions or issues:
-- Check [walkthrough.md](../../../.gemini/antigravity/brain/6370a173-9960-4114-937b-d1081ad4da64/walkthrough.md) for detailed documentation
-- Review [implementation_plan.md](../../../.gemini/antigravity/brain/6370a173-9960-4114-937b-d1081ad4da64/implementation_plan.md) for technical details
+## 🚀 Quick Start
+```bash
+git clone https://github.com/rohitcodes-png/WellGuard-Student-Health-Wellbeing-Platform.git
+cd WellGuard-Student-Health-Wellbeing-Platform
+npm install
+npm run dev
 
 ---
 
 ## 📜 License
 
-Created for Smart India Hackathon 2026
+Created for RIFT'26 by TEAM:INNOVATRIX
 
 ---
 
