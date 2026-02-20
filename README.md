@@ -1,9 +1,5 @@
 # AI-Based Student Health & Wellbeing Platform (WellGaurd)
 
-## 🏆 RIFT'26 ( TEAM: INNOVATRIX)
-
-A comprehensive national-level digital health infrastructure for students across India.
-
 ---
 
 
