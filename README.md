@@ -211,8 +211,6 @@ npm run dev
 
 ## 📜 License
 
-Created for RIFT'26 by TEAM:INNOVATRIX
-
 ---
 
 **"Building healthier, happier students across India"** 🇮🇳
