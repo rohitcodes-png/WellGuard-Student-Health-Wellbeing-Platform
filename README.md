@@ -200,12 +200,7 @@ healthcare4/
 - **No Dependencies**: Pure web technologies, no frameworks needed
 
 ---
-## 🚀 Quick Start
-```bash
-git clone https://github.com/rohitcodes-png/WellGuard-Student-Health-Wellbeing-Platform.git
-cd WellGuard-Student-Health-Wellbeing-Platform
-npm install
-npm run dev
+
 
 ---
 
