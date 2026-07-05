@@ -1,5 +1,4 @@
 # AI-Based Student Health & Wellbeing Platform (WellGaurd)
-
 ---
 
 
